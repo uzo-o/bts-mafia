@@ -8,6 +8,12 @@ purpose: store functions used among the different modes of mafia
 import random
 import sys
 import time
+from colored import fg, bg, attr
+
+# related to colored package
+color1 = fg('medium_purple_3a')
+color2 = bg('medium_purple_3a')
+reset = attr('reset')
 
 # functions are tailored to having 7 other players
 player_names = ["seokjin", "namjoon", "yoongi", "hoseok", "jimin", "taehyung", "jungkook"]
@@ -568,7 +574,7 @@ def vote_on_kill(players, username, role_assignments):
                   f"{new_player_voted} has exited the game.\n")
             players.remove(new_player_voted)
         else:
-            print("You won! The mafia has been caught!\n")
+            print(color2 + "You won! The mafia has been caught!\n")
             time.sleep(10)
             sys.exit()
     # you guessed incorrectly
@@ -771,6 +777,7 @@ def game_over(players, role_assignments):
     mafia_reveal = random.choice(players)
     while role_assignments[mafia_reveal] != "mafia":
         mafia_reveal = random.choice(players)
+    print(color2)
     print(f"The mafia was {mafia_reveal}!")
     print("GAME OVER D:\n")
     time.sleep(10)

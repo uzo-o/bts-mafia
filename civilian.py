@@ -41,3 +41,5 @@ def play_game(username, town):
     gameplay.run_dialogue(gameplay.get_civilian_dialogue_3(live_players, username, victim_2),
                           True, username, live_players)
     gameplay.vote_on_kill(live_players, username, role_assignments)
+
+    gameplay.game_over(live_players, role_assignments)

@@ -7,23 +7,76 @@ purpose: plays a text-based version of mafia with BTS members as users
 
 import random
 
+import gameplay_utilities as gameplay
+from art import *
+
 import doctor
 import police
 import civilian
 
 
-def intro(username, town, position_index):
+def print_title():
+    """
+    Print title art
+    """
+    bts = text2art("BTS", font='block', chr_ignore=True)
+    mafia = text2art("MAFIA", font='block', chr_ignore=True)
+    print(gameplay.color1 + bts)
+    print(mafia + gameplay.reset)
+
+
+def login():
+    """
+    Log in to game and specify town
+    :return: username, town
+    """
+    username = input(gameplay.color2 + "Username:  ")
+    while len(username) < 1:
+        username = input("Username (must be at least one character):  ")
+    input("Password:  ")
+    town = input("What will your in-game town be called?:  ")
+    while len(town) < 1:
+        town = input("What will your in-game town be called? (must be at least one character:  ")
+
+    return username, town
+
+
+def select_role():
+    """
+    User is assigned to police officer, doctor, or civilian
+    :return: index of role selected
+    """
+    print(gameplay.reset)             # formatting
+    version = input(gameplay.color2 + "Will you \n1) accept a randomized role"
+                                      "\n2) choose your role\n")
+    versions = ["1", "2"]
+    while version not in versions:
+        version = input("(You must type 1 or 2.)\n")
+    # random role
+    if version == "1":
+        role = random.randint(0, 2)
+    # user picks role
+    elif version == "2":
+        role = int(input("0) police officer\n1) doctor\n2) civilian\n"))
+        roles = [0, 1, 2]
+        while role not in roles:
+            role = int(input("(You must type 0, 1, or 2.)"))
+
+    return role
+
+
+def intro(username, town, role_index):
     """
     Set up the user's game
     :param username: name user will see when chatting with players
     :param town: name of the town players will live in
-    :param position_index: determines position user will play
+    :param role_index: determines role user will play
     """
     print("Welcome to BTS Mafia! Play at your own risk!\n")
     print("There will be one mafia, one police officer, and one"
           " doctor assigned to this game. Every other player is"
           " a civilian. \nIf you are not the mafia, your job is"
-          " to find that player before they find you!\n")
+          " to find that player before they find you!\n" + gameplay.reset)
 
     input(f"Your username is {username}.\nPress enter to continue\n")
 
@@ -32,43 +85,24 @@ def intro(username, town, position_index):
     for player in players:
         print(f"{player} has entered {town}.\n")
 
-    positions = ["police officer", "doctor", "civilian"]
-    print(f"You are a {positions[position_index]}.")
+    roles = ["police officer", "doctor", "civilian"]
+    print(f"You are a {roles[role_index]}.")
 
 
 def main():
     """
     Create gameplay settings and run game
     """
-    username = input("Username:  ")
-    while len(username) < 1:
-        username = input("Username (must be at least one character):  ")
-    input("Password:  ")
-    town = input("What will your in-game town be called?:  ")
-    while len(town) < 1:
-        town = input("What will your in-game town be called? (must be at least one character:  ")
+    print_title()
+    username, town = login()
+    role = select_role()
+    intro(username, town, role)
 
-    version = input("Will you \n1) accept a randomized role\n2) choose your role\n")
-    versions = ["1", "2"]
-    while version not in versions: 
-        version = input("(You must type 1 or 2.)\n")
-    # random position
-    if version == "1": 
-        position = random.randint(0, 2)
-    # user picks position
-    elif version == "2": 
-        position = int(input("0) police officer\n1) doctor\n2) civilian\n"))
-        positions = [0, 1, 2]
-        while position not in positions:
-            position = int(input("(You must type 0, 1, or 2.)"))
-
-    intro(username, town, position)
-
-    if position == 0:
+    if role == 0:
         police.play_game(username, town)
-    elif position == 1:
+    elif role == 1:
         doctor.play_game(username, town)
-    elif position == 2:
+    elif role == 2:
         civilian.play_game(username, town)
 
 
