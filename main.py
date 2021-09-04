@@ -93,6 +93,7 @@ def main():
     """
     Create gameplay settings and run game
     """
+    gameplay.play_music()
     print_title()
     username, town = login()
     role = select_role()

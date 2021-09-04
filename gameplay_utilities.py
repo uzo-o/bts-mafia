@@ -8,15 +8,38 @@ purpose: store functions used among the different modes of mafia
 import random
 import sys
 import time
+
 from colored import fg, bg, attr
 
-# related to colored package
+import os
+import contextlib
+with contextlib.redirect_stdout(None):
+    import pygame
+
 color1 = fg('medium_purple_3a')
 color2 = bg('medium_purple_3a')
 reset = attr('reset')
 
 # functions are tailored to having 7 other players
 player_names = ["seokjin", "namjoon", "yoongi", "hoseok", "jimin", "taehyung", "jungkook"]
+
+
+def resource_path(relative_path):
+    """
+    Get absolute path to resource, works for dev and for PyInstaller
+    """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+
+def play_music():
+    """
+    Play background music
+    :return:
+    """
+    pygame.mixer.init()
+    pygame.mixer.music.load(resource_path("media/fakelove.mp3"))
+    pygame.mixer.music.play(-1, 0.0)
 
 
 def assign_roles(user_role):
