@@ -9,6 +9,9 @@ import random
 import sys
 import time
 
+# functions are tailored to having 7 other players
+player_names = ["seokjin", "namjoon", "yoongi", "hoseok", "jimin", "taehyung", "jungkook"]
+
 
 def assign_roles(user_role):
     """
@@ -76,6 +79,9 @@ def print_morning_intro(day, town, user_role):
             print("The efforts of your work as the doctor will be revealed "
                   "anonymously as the citizens arise this morning.\n"
                   f"The fate of {town} is in your hands.\n")
+        elif user_role == "civilian":
+            print("You and the other civilians are furious.\n"
+                  f"{town} is spiraling into anarchy.\n")
     elif day == 3:
         if user_role == "police":
             print("You have one more day to rectify the pivotal situation, "
@@ -87,16 +93,40 @@ def print_morning_intro(day, town, user_role):
                   f"doctor.\nThe news of {town} is starting to spread.\n"
                   "By tonight, the town's rating on Niche will be irreparable.\n"
                   "Hopefully you know what you're doing.\n")
+        elif user_role == "civilian":
+            print("You have one more day to rectify the pivotal situation, "
+                  f"civilian.\n{town} is now on Buzzfeed's list of Top 10 "
+                  "Uninhabitable Towns.\nBe vigilant and do not take your "
+                  "last chance for granted.\n")
 
 
-def run_dialogue(dialogue):
+def run_dialogue(dialogue, user_is_civilian, username, players):
     """
     Run through gameplay dialogue
     :param dialogue: lines spoken by players
+    :param user_is_civilian: true if the user is a civilian, false otherwise
+    :param username: name of user playing game
+    :param players: players still in game
     """
     for line in dialogue:
-        print(line)
-        input()
+        if not user_is_civilian:
+            print(line)
+            input()
+        # civilian gets to enter custom chats & influence player chats
+        elif user_is_civilian:
+            if line == "user":
+                input(f"{username}:  ")
+            elif line == "user_effect_1":
+                user_said_aye = user_effect_1(username, players)
+            elif line == "user_effect_2":
+                user_effect_2(username, players, user_said_aye)
+            elif line == "user_effect_3":
+                user_effect_3(username, players)
+            elif line == "user_effect_4":
+                user_effect_4(username, players)
+            else:
+                print(line)
+                input()
 
 
 def get_police_dialogue_1(players, username):
@@ -313,6 +343,204 @@ def get_doctor_dialogue_3(players, username, town):
     return dialogue
 
 
+def user_effect_1(username, players):
+    """
+    User affects dialogue on day 1 (first time)
+    :param username: name of user playing game
+    :param players: players still in game
+    :return: true if user said aye, false otherwise
+    """
+    aye = input(f"{username}:  ").strip().lower()
+    if aye == "aye":
+        print(f"{players[0]}:  ill remember this at the next council meeting {username}")
+        user_said_aye = True
+    else:
+        print(f"{players[0]}:  see {username} has taste")
+        user_said_aye = False
+    input()
+
+    return user_said_aye
+
+
+def user_effect_2(username, players, user_said_aye):
+    """
+    User affects dialogue on day 1 (second time)
+    :param username: name of user playing game
+    :param players: players still in game
+    :param user_said_aye: true if user said aye, false otherwise
+    """
+    if not user_said_aye:
+        print(f"{players[0]}:  at least {username} is on my side. right, {username}?")
+        input()
+        yes = ["yes", "yeah", "ofc", "of course", "yea", "i am", "ya", "ya i am", "yah",
+               "yah i am", "yee", "yee i am", "absolutely", "yes i am", "yeah i am",
+               "of course i am", "ofc i am", "yup", "yup i am", "mhm", "sure", "i guess",
+               "sure i am", "i guess i am"]
+        side = input(f"{username}:  ").strip().lower()
+        if side in yes:
+            print(f"{players[0]}:  i always liked you kind citizen")
+            input()
+        else:
+            print(f"{players[5]}:  look at the material {players[0]}")
+            input()
+
+    else:
+        print(f"{players[3]}:  {username} and i are co-founders of the abolish "
+              f"{players[0]} movement")
+        input()
+        print(f"{players[4]}:  wait me too wtf")
+        input()
+        print(f"{players[5]}:  can we vote out all 3 of you simultaneously")
+        input()
+
+
+def user_effect_3(username, players):
+    """
+    User affects dialogue on day 2
+    :param username: name of user playing game
+    :param players: players still in game
+    """
+    blocklist = ["me", "i do", "i want to", "let's make it", "let's make one",
+                 "i want to do it", "can i help?", "let's go", "let's do it",
+                 "sure", "i sure do", "i'll help", "let's get it"]
+    block = input(f"{username}:  ").strip().lower()
+    if block in blocklist:
+        print(f"{players[1]}:  justice will be served {username}")
+    else:
+        print(f"{players[0]}:  {username} would never cosign the obstruction of justice")
+    input()
+
+
+def user_effect_4(username, players):
+    """
+    User affects dialogue on day 3
+    :param username: name of user playing game
+    :param players: players still in game
+    """
+    guess = input(f"{username}:  ")
+    if guess == players[0]:
+        print(f"{players[0]}:  who would kill this face : <")
+    elif guess == players[1]:
+        print(f"{players[1]}:  on god??")
+    elif guess == players[2]:
+        print(f"{players[2]}:  ok mafia")
+    else:
+        print(f"{players[2]}:  ugh we're out of time")
+    
+
+def get_civilian_dialogue_1(players):
+    """
+    Get a list of dialogue strings for day 1 of civilian mode
+    :param players: players still in game
+    :return: dialogue strings
+    """
+    dialogue = [
+        f"{players[0]}:  how is everyone doing on this fine morning",
+        f"(Don't forget to type your own message when your username comes up!)",
+        "user",
+        f"{players[1]}:  i'm pretty good irl but we're supposed to be in a town of murderers so",
+        f"{players[0]}:  then stay in character killjoy",
+        f"{players[2]}:  say aye if you would like to vote for {players[0]} as the town loser",
+        "user_effect_1",
+        f"{players[3]}:  aye",
+        f"{players[4]}:  if i say aye can we please exile him",
+        f"{players[5]}:  hey wild idea why don't we exile the mafia first",
+        f"{players[6]}:  i'm the police officer and the narrator told me {players[1]} is the mafia",
+        f"{players[1]}:  the police officer hasn't even been asked to guess yet\n{players[1]}:  it's day 1 my guy",
+        f"{players[6]}:  wait no i've never played this game before don't kill me",
+        f"{players[0]}:  the plot thickens as {players[6]} approaches the chopping block. what will become of him?",
+        f"{players[2]}:  don't think we forgot you're a lame {players[0]}",
+        "user_effect_2",
+        f"{players[1]}:  yeah this is kinda wack y'all can put me out of my misery now",
+        f"{players[6]}:  don't be a quitter {players[1]} : (",
+        f"{players[2]}:  if we're killing people for fun may i make a suggestion",
+        f"{players[0]}:  killing people for kicks?? you better have an airtight alibi, buddy",
+        f"{players[4]}:  i'm shaking literally who talks like that",
+        f"{players[6]}:  he might be a baby boomer let's just respect our elders",
+        f"{players[3]}:  ok is everyone ready?",
+        "user"
+    ]
+
+    return dialogue
+
+
+def get_civilian_dialogue_2(players, username):
+    """
+    Get a list of dialogue strings for day 2 of civilian mode
+    :param players: players still in game
+    :param username: name of user playing game
+    :return: dialogue strings
+    """
+    dialogue = [
+        f"{players[1]}:  another one bites the dust",
+        f"{players[0]}:  *two",
+        f"{players[1]}:  can you block people in this game",
+        f"{players[2]}:  right so does anyone have a case for why they're not the mafia",
+        "user",
+        f"{players[3]}:  [gasp] it's {username}",
+        f"{players[4]}:  they do seem pretty defensive nice work {players[3]}",
+        f"{players[1]}:  at this point i can't tell if y'all are serious or not",
+        f"{players[2]}:  can we hear other people's defenses too??",
+        f"{players[3]}:  as you can tell from my lightning speed investigative work i'm the police officer",
+        f"{players[4]}:  oh ok that makes sense",
+        f"{players[1]}:  does it actually {players[4]}",
+        f"{players[4]}:  is {players[1]} conspiring with {username}",
+        "user",
+        f"{players[4]}:  we didn't ask you",
+        f"{players[0]}:  well my defense is that i'm too morally righteous to be a killer",
+        f"{players[1]}:  who wants to make a blocklist with me",
+        "user_effect_3",
+        f"{players[2]}:  anyone ELSE have a viable case to present",
+        f"{players[3]}:  wait a second why do you keep asking everyone else to talk",
+        f"{players[0]}:  just so you know i never questioned you {players[2]} so please don't strangle me",
+        f"{players[2]}:  IM NOT GONNA STRANGLE ANYONE IM NOT THE MAFIA",
+        f"{players[1]}:  do you believe him {username}?",
+        "user",
+        f"{players[1]}:  i'll follow your lead",
+    ]
+    
+    return dialogue
+
+
+def get_civilian_dialogue_3(players, username, victim_2):
+    """
+    Get a list of dialogue strings for day 3 of civilian mode
+    :param players: players still in game
+    :param username: name of user playing game
+    :param victim_2: player killed by mafia on night 2
+    :return: dialogue strings
+    """
+    dialogue = [
+        f"{players[1]}:  we're officially screwed",
+        f"{players[0]}:  c'mon we can still turn this around",
+        f"{players[2]}:  {victim_2} was so young, , , he had so much to live for",
+        f"{players[1]}:  we don't even know his age",
+        f"{players[2]}:  i know i just wanted something to type too",
+        "user",
+        f"{players[1]}:  let's listen to {username} they haven't said anything dumb so far",
+        "user",
+        f"{players[0]}:  ty for your input",
+        f"{players[2]}:  now let's do the exact opposite of anything {username} says",
+        f"{players[1]}:  WHY",
+        f"{players[2]}:  idk just to shake things up",
+        f"{players[0]}:  some people just want to see the world burn : (",
+        f"{players[2]}:  did {players[0]} just confess to arson",
+        "user",
+        f"{players[1]}:  quick question {players[2]} are you a flat earther",
+        f"{players[2]}:  none of us have seen the earth from space anything is possible",
+        f"{players[1]}:  this explains a lot",
+        f"{players[0]}:  wait i want to hear his argument",
+        "user",
+        f"{players[1]}:  so this town is doomed",
+        f"{players[0]}:  not if we're optimistic!",
+        f"{players[1]}:  sorry\n{players[1]}:  this town is doomed!! : D <3",
+        f"{players[2]}:  let's cut to the chase who do you all think the mafia is",
+        "user_effect_4"
+    ]
+
+    return dialogue
+
+
 def vote_on_kill(players, username, role_assignments):
     """
     Everyone votes for their mafia guess
@@ -412,6 +640,39 @@ def get_doctor_kills(victim, night):
     return kills
 
 
+def get_civilian_kills(victim, night):
+    """
+    Get a list of mafia killing methods for civilian mode
+    :param victim: killed player
+    :param night: current night #
+    :return: list of kill strings
+    """
+    first_kills = [
+        f"The mafia forced {victim} to listen to bass boosted country music "
+        f"for 10 hours and they passed away.\n",
+        f"{victim}'s knee caps were stolen by the mafia. It was fatal.\n",
+        f"The mafia summoned a tornado in {victim}'s house.\n",
+        f"The mafia threw {victim} under the bus. Not metaphorically. They're dead.\n",
+        f"{victim} was pranked by the mafia. This prank went horribly wrong.\n"
+    ]
+    second_kills = [
+        f"The mafia slapped {victim} into next week and they have died.\n",
+        f"{victim} was trapped in a lion den by the mafia.\n",
+        f"The mafia spilled scalding hot coffee on {victim}'s entire body."
+        f" They could not recover.\n",
+        f"The mafia told Thanos to snap {victim}'s life away.\n",
+        f"{victim} was entranced by the mafia and agreed to stick a fork "
+        f"into an electrical socket.\n"
+    ]
+
+    if night == 1:
+        kills = first_kills
+    elif night == 2:
+        kills = second_kills
+
+    return kills
+
+
 def mafia_kill(players, role_assignments, user_role, night):
     """
     Mafia kills random player
@@ -429,6 +690,8 @@ def mafia_kill(players, role_assignments, user_role, night):
         print(random.choice(get_police_kills(killed_player, night)))
     elif user_role == "doctor":
         print(random.choice(get_doctor_kills(killed_player, night)))
+    elif user_role == "civilian":
+        print(random.choice(get_civilian_kills(killed_player, night)))
 
     print(f"{killed_player} has exited the game.\n")
     players.remove(killed_player)

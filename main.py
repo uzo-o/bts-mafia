@@ -7,6 +7,8 @@ purpose: plays a text-based version of mafia with BTS members as users
 
 import random
 import time
+
+import doctor
 import police
 
 
@@ -32,348 +34,6 @@ def intro(username, town, position_index):
 
     positions = ["police officer", "doctor", "civilian"]
     print(f"You are a {positions[position_index]}.")
-
-
-def doctor(username, town):
-    # narrator intro
-    print("\nDay 1\n(Press enter to advance the chat)\n")
-    print("The town of " + town + " used to be considerably safe.\n"
-          "The crops grew, the patriarchy was subdued, and everyone lived in harmony.\n"
-          "Recently, the killings by an alleged mafia have thrown the people of " + town +
-          " into a frenzy.\nYou have gathered with some fellow townspeople to see if you can"
-          " discover the mafia and give them a taste of their own medicine.\n")
-    input("")
-
-    # dialogue pt 1
-    print(live_players[0] + ":  how we feeling y'all\n")
-    input("")
-    print(live_players[1] + ":  people are dying " + live_players[0] + "\n")
-    input("")
-    print(live_players[0] + ":  people that aren't me\n")
-    input("")
-    print(live_players[2] + ":  yet\n")
-    input("")
-    print(live_players[3] + ":  just so you guys know i'm the police officer so i better not die\n")
-    input("")
-
-    print(username + ":  anyone could say that\n")
-    input("")
-    print(live_players[4] + ":  we need some clues\n")
-    input("")
-    print(live_players[5] + ":  let me try\n")
-    input("")
-    print(live_players[5] + ":  do any of you watch friends\n")
-    input("")
-    print(live_players[6] + ":  you mean the best show in television history?\n")
-    input("")
-
-    print(live_players[5] + ":  there's our mafia\n")
-    input("")
-    print(live_players[3] + ":  yeah we really cant argue with that\n")
-    input("")
-    print(live_players[6] + ":  OH COME ON ITS A GOOD SHOW\n")
-    input("")
-    print(live_players[1] + ":  wait i watch full house does that make me a murderer\n")
-    input("")
-    print(live_players[2] + ":  you're on thin ice\n")
-    input("")
-
-    print(username + ":  so now we have 2 suspects\n")
-    input("")
-    print(live_players[4] + ":  thank you for turning yourself in " + live_players[1] + "\n")
-    input("")
-    print(live_players[1] + ":  THAT WASN'T MY INTENTION\n")
-    input("")
-    print(live_players[0] + ":  so this is going well\n")
-    input("")
-    print(live_players[5] + ":  we're almost out of time whatever happens doctor pls save me\n")
-    input("")
-
-    print(username + ":  i hope we're all on the same page here\n")
-    input("")
-
-    # you are asked to vote to kill someone
-    kill1 = input("Who will you vote to kill?\n")
-
-    # while your vote doesn't equal a player you are told to choose someone still in the game
-    while kill1 not in live_players: 
-        if kill1 == username: 
-            kill1 = input("You cannot vote to kill yourself. Choose again.\n")
-        else: 
-            kill1 = input("Your vote must go to killing one of the players still in the game. Choose again.\n")
-
-    # if their value = mafia you have a shot of winning and being told they were the mafia
-    if role_assignments[kill1] == "mafia": 
-        if random.randint(0, 100) % 2 == 0: 
-            new_kill1 = live_players[random.randint(0, 6)]
-            while role_assignments[new_kill1] == "mafia": 
-                new_kill1 = live_players[random.randint(0, 6)]
-            print("Your vote was not in the majority. The players have voted to kill " + new_kill1 + ".\n"
-                  + new_kill1 + " has exited the game.\n")
-            live_players.remove(new_kill1)
-        else:
-            print("You won! The mafia has been caught!\n")
-            time.sleep(10)
-            exit()
-    # if their value != mafia you are told they were not not the mafia
-    elif role_assignments[kill1] != "mafia": 
-        print("Your vote was in the majority but " + kill1 + " was not the mafia!\n"
-              + kill1 + " has exited the game.\n")
-        live_players.remove(kill1)
-
-    # night falls
-    print("Night has fallen.\n")
-
-    # you are told to save someone
-    save1 = input("As the doctor, who will you save?\n")
-    while save1 not in live_players: 
-        if save1 == username: 
-            save1 = input("Don't be selfish. Choose again.\n")
-        else: 
-            save1 = input("You must guess one of the players still in the game. Choose again.\n")
-
-    # mafia kills someone who is removed from live_players
-    mafia_kill1 = live_players[random.randint(0, (len(live_players)-1))]
-    while role_assignments[mafia_kill1] == "mafia": 
-        mafia_kill1 = live_players[random.randint(0, 5)]
-    # list of ways the 1st player can die
-    first_death = [("The mafia stole " + mafia_kill1 + "'s cat and they died of grief.\n"),
-                   (mafia_kill1 + " was flexed on by the mafia. It was fatal.\n"),
-                   ("The mafia used " + mafia_kill1 + "'s head as a golf ball and they have died.\n"),
-                   ("The mafia threw " + mafia_kill1 + " into a volcano.\n"),
-                   (mafia_kill1 + " was consensually choked by the mafia."
-                    " Unfortunately, the maneuver is fatal when performed incorrectly.\n")]
-    death1 = first_death[random.randint(0, 4)]
-    print(death1)
-    print(mafia_kill1 + " has exited the game.\n")
-    live_players.remove(mafia_kill1)
-
-    # day 2 dialogue
-    print("\nDay 2\n(Press enter to advance the chat)\n")
-    print("Two innocent citizens have died, one at the hands of their"
-          " neighbors and one at the hands of the mafia.\n"
-          "The efforts of your work as the doctor will be revealed "
-          "anonymously as the citizens arise this morning.\nThe fate of "
-          + town + " is in your hands.\n")
-    input("")
-
-    # if your save matches the mafia kill they are revived and re-added to the list of
-    # live players, otherwise they are simply protected from harm
-    if save1 == mafia_kill1: 
-        print("The doctor saved " + save1 + " and they have been revived.\n" + save1 + " has entered the game.\n")
-        live_players.append(save1)
-    else: 
-        print("The doctor protected " + save1 + " and they are still in the game.\n")
-
-    if save1 != live_players[0]: 
-        print(live_players[0] + ":  so i guess " + save1 + " isn't the doctor?\n")
-    else: 
-        print(live_players[(len(live_players))-1] + ":  so i guess " + save1 + " isn't the doctor?\n")
-    input("")
-    print(live_players[1] + ":  unless they saved themselves in which case they deserve to die\n")
-    input("")
-    print(username + ":  guys " + save1 + " isn't the doctor\n")
-    input("")
-    print(live_players[2] + ":  how do you know, mafia\n")
-    input("")
-    print(username + ":  ITS NOT ME\n")
-    input("")
-
-    print(live_players[3] + ":  let's just have a casual conversation and let the truth come out on its own\n")
-    input("")
-    print(live_players[4] + ":  so, , , how's the weather for y'all\n")
-    input("")
-    print(live_players[0] + ":  it's raining where i live\n")
-    input("")
-    print(live_players[1] + ":  oh yeah i bet its pouring, , , , , , POURING BLOOD, MAFIA\n")
-    input("")
-    print(username + ":  literally what do you be talking about\n")
-    input("")
-
-    print(live_players[2] + ":  stay out of this " + username + " they're on a roll\n")
-    input("")
-    print(live_players[3] + ":  why can't we ever have a civilized conversation\n")
-    input("")
-    print(live_players[1] + ":  the way i connected the dots im a mastermind that's all there is to it\n")
-    input("")
-    print(live_players[3] + ":  never a 'how was your day' or a 'how did you sleep'\n")
-    input("")
-    print(live_players[0] + ":  do i get a chance to defend myself\n")
-    input("")
-
-    print(live_players[1] + ":  no\n")
-    input("")
-    print(live_players[2] + ":  how many times do we have to teach you this lesson old man\n")
-    input("")
-    print(username + ":  god men really are useless\n")
-    input("")
-    print(live_players[1] + ":  first of all we know second of all we know\n")
-    input("")
-    print(live_players[4] + ":  i apologize for inciting this violence\n")
-    input("")
-
-    print(live_players[(len(live_players))-1] + ":  let's just get this over with\n")
-    input("")
-
-    # vote2
-    # you are asked to vote to kill someone
-    kill2 = input("Who will you vote to kill?\n")
-
-    # while your vote doesn't equal a player you are told to choose someone still in the game
-    while kill2 not in live_players: 
-        if kill2 == username: 
-            kill2 = input("You cannot vote to kill yourself. Choose again.\n")
-        else: 
-            kill2 = input("Your vote must go to killing one of the players still in the game. Choose again.\n")
-
-    # if their value = mafia you have a shot of winning and being told they were the mafia
-    if role_assignments[kill2] == "mafia": 
-        if random.randint(0, 100) % 2 == 0: 
-            new_kill2 = live_players[random.randint(0, 4)]
-            while role_assignments[new_kill2] == "mafia": 
-                new_kill2 = live_players[random.randint(0, 4)]
-            print("Your vote was not in the majority. The players have voted to kill "
-                  + new_kill2 + ".\n" + new_kill2 + " has exited the game.\n")
-            live_players.remove(new_kill2)
-        else:
-            print("You won! The mafia has been caught!\n")
-            time.sleep(10)
-            exit()
-    # if their value != mafia you are told they were not not the mafia
-    elif role_assignments[kill2] != "mafia": 
-        print("Your vote was in the majority but " + kill2 + " was not the mafia!\n"
-              + kill2 + " has exited the game.\n")
-        live_players.remove(kill2)
-
-    # night falls
-    print("Night has fallen.\n")
-
-    # save2
-    # you are told to save someone
-    save2 = input("As the doctor, who will you save?\n")
-    while save2 not in live_players: 
-        if save2 == username: 
-            save2 = input("Don't be selfish. Choose again.\n")
-        else: 
-            save2 = input("You must guess one of the players still in the game. Choose again.\n")
-
-    # mafia kills someone who is removed from live_players
-    mafia_kill2 = live_players[random.randint(0, (len(live_players)-1))]
-    while role_assignments[mafia_kill2] == "mafia": 
-        mafia_kill2 = live_players[random.randint(0, 3)]
-    # list of ways the player can die
-    second_death = [("The mafia steamrolled " + mafia_kill2 + " and they have died.\n"),
-                    (mafia_kill2 + " was trapped in a washing machine by the mafia.\n"),
-                    ("The mafia rerouted " + mafia_kill2 + "'s GPS and they drove into the Atlantic Ocean.\n"),
-                    ("The mafia teleported " + mafia_kill2 + " into a black hole.\n"),
-                    (mafia_kill2 + " was turned into stone after making eye contact with the mafia.\n")]
-    death2 = second_death[random.randint(0, 4)]
-    print(death2)
-    print(mafia_kill2 + " has exited the game.\n")
-    live_players.remove(mafia_kill2)
-
-    # day 3 dialogue (index goes up to 2)
-    print("\nDay 3\n(Press enter to advance the chat)\n")
-    print("You have one more day to rectify the pivotal situation, doctor.\nThe news of " + town +
-          " is starting to spread.\nBy tonight, the town's rating on Niche will be irreparable.\n"
-          "Hopefully you know what you're doing.\n")
-    input("")
-
-    # if your save matches the mafia kill they are revived and re-added to the list of live players,
-    # otherwise they are simply protected from harm
-    if save2 == mafia_kill2: 
-        print("The doctor saved " + save2 + " and they have been revived.\n" + save2 + " has entered the game.\n")
-        live_players.append(save2)
-    else: 
-        print("The doctor protected " + save2 + " and they are still in the game.\n")
-
-    print(live_players[0] + ":  i can't believe we haven't caught the mafia yet\n")
-    input("")
-    print(live_players[(len(live_players))-1] + ":  let's not waste this day then\n")
-    input("")
-    print(live_players[(len(live_players))-2] + ":  y'all do realize this is just a game right\n")
-    input("")
-    print(live_players[0] + ":  shut up didn't you hear that the fate of " + town + " is in our hands\n")
-    input("")
-    print(username + ":  i am begging y'all to get a hold of yourselves\n")
-    input("")
-
-    print(live_players[2] + ":  ok im gonna flip a coin and ill either sacrifice myself or " + username + "\n")
-    input("")
-    print(username + ":  me???\n")
-    input("")
-    print(live_players[1] + ":  what does the coin say?\n")
-    input("")
-    print(live_players[2] + ":  # " + username + "isoverparty\n")
-    input("")
-    print(live_players[0] + ":  cancel culture is extremely toxic and i feel"
-                            " like we as a society have to stop validating this"
-                            " kind of close-minded behavior\n")
-    input("")
-
-    print(username + ":  oh ok socrates\n")
-    input("")
-    print(live_players[0] + ":  : (\n")
-    input("")
-    print(live_players[1] + ":  whoa this is a bully-free zone " + username + "\n")
-    input("")
-    print(live_players[1] + ":  unless of course it's about full house\n")
-    input("")
-    print(live_players[2] + ":  " + username + " your tombstone is writing itself\n")
-    input("")
-
-    print(username + ":  come on guys im like the only one who hasn't tried to deflect by accusing someone else\n")
-    input("")
-    print(live_players[0] + ":  that's a good point\n")
-    input("")
-    print(live_players[0] + ":  but you still sound like you would shove me in a locker\n")
-    input("")
-    print(live_players[1] + ":  that's a you problem " + live_players[0] + "\n")
-    input("")
-    print(live_players[2] + ":  let's all just vote for whoever we want\n")
-    input("")
-
-    print(live_players[(len(live_players))-1] + ":  good luck everyone\n")
-    input("")
-
-    # vote3
-    # you are asked to vote to kill someone
-    kill3 = input("Who will you vote to kill?\n")
-
-    # while your vote doesn't equal a player you are told to choose someone still in the game
-    while kill3 not in live_players: 
-        if kill3 == username: 
-            kill3 = input("You cannot vote to kill yourself. Choose again.\n")
-        else: 
-            kill3 = input("Your vote must go to killing one of the players still in the game. Choose again.\n")
-
-    # if their value = mafia you have a shot of winning and being told they were the mafia
-    if role_assignments[kill3] == "mafia": 
-        if random.randint(0, 100) % 2 == 0: 
-            new_kill3 = live_players[random.randint(0, 2)]
-            while role_assignments[new_kill3] == "mafia": 
-                new_kill3 = live_players[random.randint(0, 2)]
-            print("Your vote was not in the majority. The players have voted to kill "
-                  + new_kill3 + ".\n" + new_kill3 + " has exited the game.\n")
-            live_players.remove(new_kill3)
-        else:
-            print("You won! The mafia has been caught!\n")
-            time.sleep(10)
-            exit()
-    # if their value != mafia you are told they were not not the mafia
-    elif role_assignments[kill3] != "mafia": 
-        print("Your vote was in the majority but " + kill3 + " was not the mafia!\n" + kill3 +
-              " has exited the game.\n")
-        live_players.remove(kill3)
-
-    # game over
-    mafia_reveal = live_players[random.randint(0, 2)]
-    while role_assignments[mafia_reveal] != "mafia": 
-        mafia_reveal = live_players[random.randint(0, 2)]
-
-    print("The mafia was " + mafia_reveal + "!")
-    print("GAME OVER D:  \n")
-    time.sleep(10)
 
 
 def civilian(username, town): 
@@ -441,6 +101,7 @@ def civilian(username, town):
     else: 
         print(live_players[0] + ":  see " + username + " has taste\n")
     input("")
+
     print(live_players[3] + ":  aye\n")
     input("")
     print(live_players[4] + ":  if i say aye can we please exile him\n")
@@ -481,6 +142,7 @@ def civilian(username, town):
         input("")
         print(live_players[5] + ":  can we vote out all 3 of you simultaneously\n")
         input("")
+
     print(live_players[1] + ":  yeah this is kinda wack y'all can put me out of my misery now\n")
     input("")
     print(live_players[6] + ":  don't be a quitter " + live_players[1] + " : (\n")
@@ -586,6 +248,7 @@ def civilian(username, town):
 
     print(live_players[0] + ":  well my defense is that i'm too morally righteous to be a killer\n")
     input("")
+
     print(live_players[1] + ":  who wants to make a blocklist with me\n")
     input("")
     blocklist = ["me", "i do", "i want to", "let's make it", "let's make one", "i want to do it",
@@ -596,6 +259,7 @@ def civilian(username, town):
     else: 
         print(live_players[0] + ":  " + username + " would never cosign the obstruction of justice\n")
     input("")
+
     print(live_players[2] + ":  anyone ELSE have a viable case to present\n")
     input("")
 
@@ -802,7 +466,7 @@ def main():
     if position == 0:
         police.play_game(username, town)
     elif position == 1:
-        doctor(username, town)
+        doctor.play_game(username, town)
     elif position == 2:
         civilian(username, town)
 
