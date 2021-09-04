@@ -34,46 +34,7 @@ def intro(username, town, position_index):
     print(f"You are a {positions[position_index]}.")
 
 
-def doctor(username, town): 
-    # if user is a doctor
-    # story but with the option to make a character variable = "saved";
-    # the mafia will then make their character variable of choice = "killed"
-    # but before this so that the doctor can overwrite their choice
-
-    # list of 7 possible bts roles (5 civilians, 1 mafia, 1 doctor)
-    roles = ["civilian", "civilian", "civilian", "civilian", "civilian", "mafia", "doctor"]
-
-    # assign an item to the list to a role variable ex. role 1 and then remove that option from the list
-    role1 = roles[random.randint(0, (len(roles)-1))]
-    roles.remove(role1)
-    role2 = roles[random.randint(0, (len(roles)-1))]
-    roles.remove(role2)
-    role3 = roles[random.randint(0, (len(roles)-1))]
-    roles.remove(role3)
-    role4 = roles[random.randint(0, (len(roles)-1))]
-    roles.remove(role4)
-    role5 = roles[random.randint(0, (len(roles)-1))]
-    roles.remove(role5)
-    role6 = roles[random.randint(0, (len(roles)-1))]
-    roles.remove(role6)
-    role7 = roles[random.randint(0, (len(roles)-1))]
-    roles.remove(role7)
-
-    # dictionary of assigned roles
-    role_assignments = {
-        'seokjin': role1, 
-        'namjoon': role2, 
-        'yoongi': role3, 
-        'hoseok': role4, 
-        'jimin': role5, 
-        'taehyung': role6, 
-        'jungkook': role7
-    }
-
-    # list of people still in game
-    live_players = ["seokjin", "namjoon", "yoongi", "hoseok", "jimin", "taehyung", "jungkook"]
-    random.shuffle(live_players)
-
+def doctor(username, town):
     # narrator intro
     print("\nDay 1\n(Press enter to advance the chat)\n")
     print("The town of " + town + " used to be considerably safe.\n"

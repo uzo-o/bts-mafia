@@ -199,6 +199,40 @@ def get_police_dialogue_3(players, username):
     return dialogue
 
 
+def get_doctor_dialogue_1(players, username):
+    """
+    Get a list of dialogue strings for day 1 of doctor mode
+    :param players: list of players still in game
+    :param username: name of user playing game
+    :return: dialogue strings
+    """
+    dialogue = [
+        f"{players[0]}:  how we feeling y'all",
+        f"{players[1]}:  people are dying {players[0]}",
+        f"{players[0]}:  people that aren't me",
+        f"{players[2]}:  yet",
+        f"{players[3]}:  just so you guys know i'm the police officer so i better not die",
+        f"{username}:  anyone could say that",
+        f"{players[4]}:  we need some clues",
+        f"{players[5]}:  let me try",
+        f"{players[5]}:  do any of you watch friends",
+        f"{players[6]}:  you mean the best show in television history?",
+        f"{players[5]}:  there's our mafia",
+        f"{players[3]}:  yeah we really cant argue with that",
+        f"{players[6]}:  OH COME ON ITS A GOOD SHOW",
+        f"{players[1]}:  wait i watch full house does that make me a murderer",
+        f"{players[2]}:  you're on thin ice",
+        f"{username}:  so now we have 2 suspects",
+        f"{players[4]}:  thank you for turning yourself in {players[1]}",
+        f"{players[1]}:  THAT WASN'T MY INTENTION",
+        f"{players[0]}:  so this is going well",
+        f"{players[5]}:  we're almost out of time whatever happens doctor pls save me",
+        f"{username}:  i hope we're all on the same page here",
+    ]
+
+    return dialogue
+
+
 def vote_on_kill(players, username, role_assignments):
     """
     Everyone votes for their mafia guess
@@ -267,6 +301,9 @@ def get_police_kills(victim, night):
     return kills
 
 
+# FIXME GET DOCTOR KILLS (BOOKMARK)
+
+
 def mafia_kill(players, role_assignments, user_role, night):
     """
     Mafia kills random player
@@ -297,9 +334,10 @@ def nighttime(user_role, players, username, role_assignments, night):
     :param username: name of user playing game
     :param role_assignments: mapping of BTS members to roles
     :param night: current night #
-    :return: killed player
+    :return: killed player, saved player
     """
     print("Night has fallen.\n")
+    save = ""                   # dummy var when outside doctor mode
 
     if user_role == "police":
         guess = input("As the police officer, who do you think is the mafia?\n")
@@ -315,4 +353,13 @@ def nighttime(user_role, players, username, role_assignments, night):
         elif role_assignments[guess] != "mafia":
             print(f"{guess} is not the mafia!\n")
 
-    return mafia_kill(players, role_assignments, user_role, night)
+    elif user_role == "doctor":
+        save = input("As the doctor, who will you save?\n")
+        while save not in players:
+            if save == username:
+                save = input("Don't be selfish. Choose again.\n")
+            else:
+                save = input("You must guess one of the players still in the game."
+                             " Choose again.\n")
+
+    return mafia_kill(players, role_assignments, user_role, night), save
