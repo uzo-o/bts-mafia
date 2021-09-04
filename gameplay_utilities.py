@@ -108,8 +108,11 @@ def run_dialogue(dialogue, user_is_civilian, username, players):
     :param username: name of user playing game
     :param players: players still in game
     """
+    special_lines = ["user", "user_effect_1", "user_effect_2",
+                     "user_effect_3", "user_effect_4"]
+
     for line in dialogue:
-        if not user_is_civilian:
+        if not user_is_civilian or line not in special_lines:
             print(line)
             input()
         # civilian gets to enter custom chats & influence player chats
@@ -124,9 +127,6 @@ def run_dialogue(dialogue, user_is_civilian, username, players):
                 user_effect_3(username, players)
             elif line == "user_effect_4":
                 user_effect_4(username, players)
-            else:
-                print(line)
-                input()
 
 
 def get_police_dialogue_1(players, username):
@@ -352,10 +352,10 @@ def user_effect_1(username, players):
     """
     aye = input(f"{username}:  ").strip().lower()
     if aye == "aye":
-        print(f"{players[0]}:  ill remember this at the next council meeting {username}")
+        print(f"\n{players[0]}:  ill remember this at the next council meeting {username}")
         user_said_aye = True
     else:
-        print(f"{players[0]}:  see {username} has taste")
+        print(f"\n{players[0]}:  see {username} has taste")
         user_said_aye = False
     input()
 
@@ -378,10 +378,10 @@ def user_effect_2(username, players, user_said_aye):
                "sure i am", "i guess i am"]
         side = input(f"{username}:  ").strip().lower()
         if side in yes:
-            print(f"{players[0]}:  i always liked you kind citizen")
+            print(f"\n{players[0]}:  i always liked you kind citizen")
             input()
         else:
-            print(f"{players[5]}:  look at the material {players[0]}")
+            print(f"\n{players[5]}:  look at the material {players[0]}")
             input()
 
     else:
@@ -405,9 +405,9 @@ def user_effect_3(username, players):
                  "sure", "i sure do", "i'll help", "let's get it"]
     block = input(f"{username}:  ").strip().lower()
     if block in blocklist:
-        print(f"{players[1]}:  justice will be served {username}")
+        print(f"\n{players[1]}:  justice will be served {username}")
     else:
-        print(f"{players[0]}:  {username} would never cosign the obstruction of justice")
+        print(f"\n{players[0]}:  {username} would never cosign the obstruction of justice")
     input()
 
 
@@ -419,13 +419,13 @@ def user_effect_4(username, players):
     """
     guess = input(f"{username}:  ")
     if guess == players[0]:
-        print(f"{players[0]}:  who would kill this face : <")
+        print(f"\n{players[0]}:  who would kill this face : <")
     elif guess == players[1]:
-        print(f"{players[1]}:  on god??")
+        print(f"\n{players[1]}:  on god??")
     elif guess == players[2]:
-        print(f"{players[2]}:  ok mafia")
+        print(f"\n{players[2]}:  ok mafia")
     else:
-        print(f"{players[2]}:  ugh we're out of time")
+        print(f"\n{players[2]}:  ugh we're out of time")
     
 
 def get_civilian_dialogue_1(players):
@@ -567,7 +567,6 @@ def vote_on_kill(players, username, role_assignments):
                   f"The players have voted to kill {new_player_voted}.\n"
                   f"{new_player_voted} has exited the game.\n")
             players.remove(new_player_voted)
-            input()
         else:
             print("You won! The mafia has been caught!\n")
             time.sleep(10)
@@ -577,6 +576,7 @@ def vote_on_kill(players, username, role_assignments):
         print(f"Your vote was in the majority but {player_voted} was not the mafia!\n"
               f"{player_voted} has exited the game.\n")
         players.remove(player_voted)
+    input()
 
 
 def get_police_kills(victim, night):
@@ -695,6 +695,7 @@ def mafia_kill(players, role_assignments, user_role, night):
 
     print(f"{killed_player} has exited the game.\n")
     players.remove(killed_player)
+    input()
 
     return killed_player
 
