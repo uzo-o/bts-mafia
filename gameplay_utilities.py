@@ -42,6 +42,20 @@ def play_music():
     pygame.mixer.music.play(-1, 0.0)
 
 
+def play_end_sound(user_won):
+    """
+    Play a sound effect at the end of the game
+    :param user_won: true if the user won the game, false otherwise
+    """
+    if user_won:
+        sound = "media/win.mp3"
+    else:
+        sound = "media/lose.mp3"
+    pygame.mixer.stop()
+    pygame.mixer.music.load(resource_path(sound))
+    pygame.mixer.music.play(1, 0.0)
+
+
 def assign_roles(user_role):
     """
     Randomly assign a BTS member to a role in the game
@@ -597,7 +611,8 @@ def vote_on_kill(players, username, role_assignments):
                   f"{new_player_voted} has exited the game.\n")
             players.remove(new_player_voted)
         else:
-            print(color2 + "You won! The mafia has been caught!\n")
+            play_end_sound(True)
+            print(color2 + "\nYou won! The mafia has been caught!\n")
             time.sleep(10)
             sys.exit()
     # you guessed incorrectly
@@ -800,6 +815,7 @@ def game_over(players, role_assignments):
     mafia_reveal = random.choice(players)
     while role_assignments[mafia_reveal] != "mafia":
         mafia_reveal = random.choice(players)
+    play_end_sound(False)
     print(color2)
     print(f"The mafia was {mafia_reveal}!")
     print("GAME OVER D:\n")
