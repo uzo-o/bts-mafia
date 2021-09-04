@@ -65,19 +65,28 @@ def print_morning_intro(day, town, user_role):
               "townspeople to see if you can discover the mafia and "
               "give them a taste of their own medicine.\n")
     elif day == 2:
+        print("Two innocent citizens have died, one at the hands "
+              "of their neighbors and one at the hands of the mafia.")
         if user_role == "police":
-            print("Two innocent citizens have died, one at the hands "
-                  "of their neighbors and one at the hands of the mafia."
-                  "\nTensions have risen and it seems like the conflict "
+            print("Tensions have risen and it seems like the conflict "
                   "is getting them nowhere.\nImmediately after the "
                   f"back-to-back funerals, the people of {town} have "
                   "gathered once again to right their wrong.\n")
+        elif user_role == "doctor":
+            print("The efforts of your work as the doctor will be revealed "
+                  "anonymously as the citizens arise this morning.\n"
+                  f"The fate of {town} is in your hands.\n")
     elif day == 3:
         if user_role == "police":
             print("You have one more day to rectify the pivotal situation, "
                   f"police officer.\nThe future of {town} is on the line.\n"
                   "If the mafia isn't caught, no one will ever return to "
                   "your Airbnb.\n")
+        elif user_role == "doctor":
+            print("You have one more day to rectify the pivotal situation, "
+                  f"doctor.\nThe news of {town} is starting to spread.\n"
+                  "By tonight, the town's rating on Niche will be irreparable.\n"
+                  "Hopefully you know what you're doing.\n")
 
 
 def run_dialogue(dialogue):
@@ -156,7 +165,7 @@ def get_police_dialogue_2(players, username, victim_1):
         f"{players[3]}:  where were you when {victim_1} died 2 minutes ago",
         f"{players[2]}:  thanks for wasting time again but we need to vote now"
     ]
-    
+
     return dialogue
 
 
@@ -233,6 +242,77 @@ def get_doctor_dialogue_1(players, username):
     return dialogue
 
 
+def get_doctor_dialogue_2(players, username, save_1):
+    """
+    Get a list of dialogue strings for day 2 of doctor mode
+    :param players: players still in game
+    :param username: name of user playing game
+    :param save_1: player saved on night 1
+    :return: dialogue strings
+    """
+    dialogue = [
+        f"{players[1]}:  unless they saved themselves in which case they deserve to die",
+        f"{username}:  guys {save_1} isn't the doctor",
+        f"{players[2]}:  how do you know, mafia",
+        f"{username}:  ITS NOT ME",
+        f"{players[3]}:  let's just have a casual conversation and let the truth come out on its own",
+        f"{players[4]}:  so, , , how's the weather for y'all",
+        f"{players[0]}:  it's raining where i live",
+        f"{players[1]}:  oh yeah i bet its pouring, , , , , , POURING BLOOD, MAFIA",
+        f"{username}:  literally what do you be talking about",
+        f"{players[2]}:  stay out of this {username} they're on a roll",
+        f"{players[3]}:  why can't we ever have a civilized conversation",
+        f"{players[1]}:  the way i connected the dots im a mastermind that's all there is to it",
+        f"{players[3]}:  never a 'how was your day' or a 'how did you sleep'",
+        f"{players[0]}:  do i get a chance to defend myself",
+        f"{players[1]}:  no",
+        f"{players[2]}:  how many times do we have to teach you this lesson old man",
+        f"{username}:  god men really are something",
+        f"{players[1]}:  first of all we know second of all we know",
+        f"{players[4]}:  i apologize for inciting this violence",
+        f"{players[(len(players)) - 1]}:  let's just get this over with"
+    ]
+
+    return dialogue
+
+
+def get_doctor_dialogue_3(players, username, town):
+    """
+    Get a list of dialogue strings for day 3 of doctor mode
+    :param players: players still in game
+    :param username: name of user playing game
+    :param town: name of town in game
+    :return: dialogue strings
+    """
+    dialogue = [
+        f"{players[0]}:  i can't believe we haven't caught the mafia yet",
+        f"{players[(len(players)) - 1]}:  let's not waste this day then",
+        f"{players[(len(players)) - 2]}:  y'all do realize this is just a game right",
+        f"{players[0]}:  shut up didn't you hear that the fate of {town} is in our hands",
+        f"{username}:  i am begging y'all to get a hold of yourselves",
+        f"{players[2]}:  ok im gonna flip a coin and ill either sacrifice myself or {username}",
+        f"{username}:  me???",
+        f"{players[1]}:  what does the coin say?",
+        f"{players[2]}:  #{username}isoverparty",
+        f"{players[0]}:  cancel culture is extremely toxic and i feel"
+        " like we as a society have to stop validating this"
+        " kind of close-minded behavior",
+        f"{username}:  oh ok socrates",
+        f"{players[0]}:  : (",
+        f"{players[1]}:  whoa this is a bully-free zone {username}",
+        f"{players[1]}:  unless of course it's about full house",
+        f"{players[2]}:  {username} your tombstone is writing itself",
+        f"{username}:  come on guys im like the only one who hasn't tried to deflect by accusing someone else",
+        f"{players[0]}:  that's a good point",
+        f"{players[0]}:  but you still sound like you would shove me in a locker",
+        f"{players[1]}:  that's a you problem {players[0]}",
+        f"{players[2]}:  let's all just vote for whoever we want",
+        f"{players[(len(players)) - 1]}:  good luck everyone"
+    ]
+
+    return dialogue
+
+
 def vote_on_kill(players, username, role_assignments):
     """
     Everyone votes for their mafia guess
@@ -273,7 +353,7 @@ def vote_on_kill(players, username, role_assignments):
 
 def get_police_kills(victim, night):
     """
-    Get a list of mafia killing methods for police gameplay
+    Get a list of mafia killing methods for police mode
     :param victim: killed player
     :param night: current night #
     :return: list of kill strings
@@ -301,7 +381,35 @@ def get_police_kills(victim, night):
     return kills
 
 
-# FIXME GET DOCTOR KILLS (BOOKMARK)
+def get_doctor_kills(victim, night):
+    """
+    Get a list of mafia killing methods for doctor mode
+    :param victim: killed player
+    :param night: current night #
+    :return: list of kill strings
+    """
+    first_kills = [
+        f"The mafia stole {victim}'s cat and they died of grief.\n",
+        f"{victim} was flexed on by the mafia. It was fatal.\n",
+        f"The mafia used {victim}'s head as a golf ball and they have died.\n",
+        f"The mafia threw {victim} into a volcano.\n",
+        f"The mafia practiced the heimlich on {victim}. "
+        f"Unfortunately, the maneuver is fatal when performed incorrectly.\n"
+    ]
+    second_kills = [
+        f"The mafia steamrolled {victim} and they have died.\n",
+        f"{victim} was trapped in a washing machine by the mafia.\n",
+        f"The mafia rerouted {victim}'s GPS and they drove into the Atlantic Ocean.\n",
+        f"The mafia teleported {victim} into a black hole.\n",
+        f"{victim} was turned into stone after making eye contact with the mafia.\n"
+    ]
+
+    if night == 1:
+        kills = first_kills
+    elif night == 2:
+        kills = second_kills
+
+    return kills
 
 
 def mafia_kill(players, role_assignments, user_role, night):
@@ -319,6 +427,8 @@ def mafia_kill(players, role_assignments, user_role, night):
 
     if user_role == "police":
         print(random.choice(get_police_kills(killed_player, night)))
+    elif user_role == "doctor":
+        print(random.choice(get_doctor_kills(killed_player, night)))
 
     print(f"{killed_player} has exited the game.\n")
     players.remove(killed_player)
@@ -337,7 +447,7 @@ def nighttime(user_role, players, username, role_assignments, night):
     :return: killed player, saved player
     """
     print("Night has fallen.\n")
-    save = ""                   # dummy var when outside doctor mode
+    save = ""  # dummy var when outside doctor mode
 
     if user_role == "police":
         guess = input("As the police officer, who do you think is the mafia?\n")
@@ -363,3 +473,41 @@ def nighttime(user_role, players, username, role_assignments, night):
                              " Choose again.\n")
 
     return mafia_kill(players, role_assignments, user_role, night), save
+
+
+def doctor_save_outcome(victim, save, players, night):
+    """
+    Reveal the outcome of the doctor's choice to save a player
+    :param victim: the last player killed
+    :param save: the player saved by the mafia
+    :param players: players still in the game
+    :param night: the night the save took place
+    """
+    if save == victim:
+        print(f"The doctor saved {save} and they have been revived.\n"
+              f"{save} has entered the game.\n")
+        players.append(save)
+    else:
+        print(f"The doctor protected {save} and they are still in the game.\n")
+
+    if night == 1:
+        if save != players[0]:
+            print(f"{players[0]}:  so i guess {save} isn't the doctor?\n")
+        else:
+            print(f"{players[(len(players)) - 1]}:  so i guess {save} isn't the doctor?\n")
+        input()
+
+
+def game_over(players, role_assignments):
+    """
+    Reveal the mafia and end the game
+    :param players: players still in game
+    :param role_assignments: mapping of BTS members to roles
+    """
+    mafia_reveal = random.choice(players)
+    while role_assignments[mafia_reveal] != "mafia":
+        mafia_reveal = random.choice(players)
+    print(f"The mafia was {mafia_reveal}!")
+    print("GAME OVER D:\n")
+    time.sleep(10)
+    sys.exit()

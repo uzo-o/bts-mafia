@@ -28,4 +28,19 @@ def play_game(username, town):
     gameplay.print_morning_intro(1, town, user_role)
     gameplay.run_dialogue(gameplay.get_doctor_dialogue_1(live_players, username))
     gameplay.vote_on_kill(live_players, username, role_assignments)
+    victim_1, save_1 = gameplay.nighttime(user_role, live_players, username, role_assignments, 1)
 
+    # second round
+    gameplay.print_morning_intro(2, town, user_role)
+    gameplay.doctor_save_outcome(victim_1, save_1, live_players, 1)
+    gameplay.run_dialogue(gameplay.get_police_dialogue_2(live_players, username, save_1))
+    gameplay.vote_on_kill(live_players, username, role_assignments)
+    victim_2, save_2 = gameplay.nighttime(user_role, live_players, username, role_assignments, 2)
+
+    # third round
+    gameplay.print_morning_intro(3, town, user_role)
+    gameplay.doctor_save_outcome(victim_2, save_2, live_players, 2)
+    gameplay.run_dialogue(gameplay.get_doctor_dialogue_3(live_players, username, town))
+    gameplay.vote_on_kill(live_players, username, role_assignments)
+
+    gameplay.game_over(live_players, role_assignments)

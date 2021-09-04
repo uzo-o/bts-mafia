@@ -41,11 +41,4 @@ def play_game(username, town):
     gameplay.run_dialogue(gameplay.get_police_dialogue_3(live_players, username))
     gameplay.vote_on_kill(live_players, username, role_assignments)
 
-    # game over
-    mafia_reveal = random.choice(live_players)
-    while role_assignments[mafia_reveal] != "mafia":
-        mafia_reveal = random.choice(live_players)
-    print(f"The mafia was {mafia_reveal}!")
-    print("GAME OVER D:\n")
-    time.sleep(10)
-    sys.exit()
+    gameplay.game_over(live_players, role_assignments)
