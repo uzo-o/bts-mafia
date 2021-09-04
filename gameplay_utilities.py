@@ -55,12 +55,12 @@ def print_morning_intro(day, town, user_role):
     :param town: name of town in game
     :param user_role: the user's role in the game
     """
-    print(f"\nDay {day}\n(Press enter to advance the chat)\n")
+    input(f"\nDay {day}\n(Press enter to advance the chat)")
     if day == 1:
         print(f"The town of {town} used to be considerably safe.\n"
               "The crops grew, the patriarchy was subdued, and "
               "everyone lived in harmony.\nRecently, the killings "
-              "by an alleged mafia have thrown the people of {town} "
+              f"by an alleged mafia have thrown the people of {town} "
               "into a frenzy.\nYou have gathered with some fellow "
               "townspeople to see if you can discover the mafia and "
               "give them a taste of their own medicine.\n")
@@ -72,7 +72,12 @@ def print_morning_intro(day, town, user_role):
                   "is getting them nowhere.\nImmediately after the "
                   f"back-to-back funerals, the people of {town} have "
                   "gathered once again to right their wrong.\n")
-    input("")
+    elif day == 3:
+        if user_role == "police":
+            print("You have one more day to rectify the pivotal situation, "
+                  f"police officer.\nThe future of {town} is on the line.\n"
+                  "If the mafia isn't caught, no one will ever return to "
+                  "your Airbnb.\n")
 
 
 def run_dialogue(dialogue):
@@ -93,28 +98,28 @@ def get_police_dialogue_1(players, username):
     :return: dialogue strings
     """
     dialogue = [
-        f"{players[0]}:  let's kill {players[1]}\n",
-        f"{players[1]}:  we literally just started??\n",
-        f"{players[0]}:  i know but you seem suspicious\n",
-        f"{players[2]}:  we can't just start pointing fingers straight out of the gate\n",
-        f"{username}:  we have to be strategic about this\n",
-        f"{players[2]}:  exactly {username}\n",
-        f"{players[3]}:  then let's pick {players[0]}\n",
+        f"{players[0]}:  let's kill {players[1]}",
+        f"{players[1]}:  we literally just started??",
+        f"{players[0]}:  i know but you seem suspicious",
+        f"{players[2]}:  we can't just start pointing fingers straight out of the gate",
+        f"{username}:  we have to be strategic about this",
+        f"{players[2]}:  exactly {username}",
+        f"{players[3]}:  then let's pick {players[0]}",
         f"{players[0]}:  THEY NEED PLAYERS LIKE ME THEY NEED PLAYERS LIKE ME"
-        f" SO THEY CAN GET ON THEIR KEYBOARDS AND MAKE ME THE BAD GUY CHUN-LI\n",
-        f"{players[4]}:  i say we kill him purely for quoting nicki minaj\n",
-        f"{players[5]}:  good strategy\n",
-        f"{players[6]}:  i don't think we're getting anywhere with this\n",
-        f"{players[2]}:  me neither : (\n",
-        f"{players[1]}:  what do you think {username}?\n",
-        f"{username}:  well i know it's not me\n",
-        f"{players[3]}:  how convincing.\n",
-        f"{players[0]}:  i'm telling you guys the mafia is {players[1]} my hunches are never wrong\n",
-        f"{players[4]}:  well i still think its you boo\n",
-        f"{players[6]}:  maybe it /is/ {username}? they seemed pretty defensive too\n",
-        f"{players[5]}:  all they did was say they weren't the mafia are you dumb\n",
-        f"{username}:  thank you!\n",
-        f"{players[3]}:  we're out of time let's just vote.\n"
+        f" SO THEY CAN GET ON THEIR KEYBOARDS AND MAKE ME THE BAD GUY CHUN-LI",
+        f"{players[4]}:  i say we kill him purely for quoting nicki minaj",
+        f"{players[5]}:  good strategy",
+        f"{players[6]}:  i don't think we're getting anywhere with this",
+        f"{players[2]}:  me neither : (",
+        f"{players[1]}:  what do you think {username}?",
+        f"{username}:  well i know it's not me",
+        f"{players[3]}:  how convincing.",
+        f"{players[0]}:  i'm telling you guys the mafia is {players[1]} my hunches are never wrong",
+        f"{players[4]}:  well i still think its you boo",
+        f"{players[6]}:  maybe it /is/ {username}? they seemed pretty defensive too",
+        f"{players[5]}:  all they did was say they weren't the mafia are you dumb",
+        f"{username}:  thank you!",
+        f"{players[3]}:  we're out of time let's just vote."
     ]
 
     return dialogue
@@ -129,29 +134,68 @@ def get_police_dialogue_2(players, username, victim_1):
     :return: dialogue strings
     """
     dialogue = [
-        f"{username}:  press f to pay respects for {victim_1}\n",
-        f"{players[3]}:  f\n",
-        f"{players[4]}:  f : <\n",
-        f"{players[2]}:  ok let's focus here\n",
-        f"{players[1]}:  interesting.\n",
-        f"{players[2]}:  what\n",
-        f"{players[1]}:  {players[2]} has no respect for the dead let's kill him\n",
-        f"{players[0]}:  wait tea\n",
-        f"{players[2]}:  ARE YOU PEOPLE SERIOUS\n",
-        f"{players[4]}:  so we're gonna keep picking a scapegoat based off of 0 evidence?\n",
-        f"{username}:  do you want it to be you\n",
-        f"{players[4]}:  on second thought-\n",
-        f"{players[2]}:  OH COME ON\n",
-        f"{players[3]}:  all in favor of killing {players[2]} say aye\n",
-        f"{players[4]}:  that's not even how the voting system works\n",
-        f"{players[0]}:  aye aye captain\n",
-        f"{players[1]}:  does anyone have a better suggestion?\n",
-        f"{username}:  idk but im not really sold on {players[2]}\n",
-        f"{players[0]}:  so let's kill {victim_1}\n",
-        f"{players[3]}:  where were you when {victim_1} died 2 minutes ago\n",
-        f"{players[2]}:  thanks for wasting time again but we need to vote now\n"
+        f"{username}:  press f to pay respects for {victim_1}",
+        f"{players[3]}:  f",
+        f"{players[4]}:  f : <",
+        f"{players[2]}:  ok let's focus here",
+        f"{players[1]}:  interesting.",
+        f"{players[2]}:  what",
+        f"{players[1]}:  {players[2]} has no respect for the dead let's kill him",
+        f"{players[0]}:  wait tea",
+        f"{players[2]}:  ARE YOU PEOPLE SERIOUS",
+        f"{players[4]}:  so we're gonna keep picking a scapegoat based off of 0 evidence?",
+        f"{username}:  do you want it to be you",
+        f"{players[4]}:  on second thought-",
+        f"{players[2]}:  OH COME ON",
+        f"{players[3]}:  all in favor of killing {players[2]} say aye",
+        f"{players[4]}:  that's not even how the voting system works",
+        f"{players[0]}:  aye aye captain",
+        f"{players[1]}:  does anyone have a better suggestion?",
+        f"{username}:  idk but im not really sold on {players[2]}",
+        f"{players[0]}:  so let's kill {victim_1}",
+        f"{players[3]}:  where were you when {victim_1} died 2 minutes ago",
+        f"{players[2]}:  thanks for wasting time again but we need to vote now"
     ]
     
+    return dialogue
+
+
+def get_police_dialogue_3(players, username):
+    """
+    Get a list of dialogue strings for day 3 of police mode
+    :param players: list of players still in game
+    :param username: name of user playing game
+    :return: dialogue strings
+    """
+    dialogue = [
+        f"{players[1]}:  and then there were 4",
+        f"{players[0]}:  we're so close guys",
+        f"{username}:  i think the odds are in our favor",
+        f"{players[2]}:  i'm the doctor so don't kill me guys",
+        f"{players[1]}:  if you were the doctor why would you tell us",
+        f"{players[0]}:  yeah bc now the mafia will kill you so you cant save a civilian",
+        f"{players[2]}:  why would i care about that when i can save myself",
+        f"{username}:  points were made",
+        f"{players[1]}:  this is such a difficult decision",
+        f"{players[0]}:  but you know what would make it easier?",
+        f"{players[1]}:  what",
+        f"{players[0]}:  voting to kill you",
+        f"{players[2]}:  dun dun DUN",
+        f"{username}:  it's not like we have any other leads",
+        f"{players[1]}:  i will venmo you guys $4 to not kill me",
+        f"{players[2]}:  hmm",
+        f"{username}:  each?",
+        f"{players[0]}:  ??? he's a literal stranger think of the big picture",
+        f"{players[2]}:  rn im thinking i could get a wendy's 4 for $4 in the next 10 minutes",
+        f"{username}:  wait but is it $4 each? like we don't have to split it?",
+        f"{players[1]}:  we can discuss the terms later",
+        f"{players[2]}:  sounds good to me let's vote for {username}",
+        f"{players[0]}:  now there's an idea",
+        f"{username}:  I KNOW Y'ALL LYING ",
+        f"{players[1]}:  i cant wait to end this game",
+        f"{players[0]}:  say no more",
+    ]
+
     return dialogue
 
 
@@ -181,6 +225,7 @@ def vote_on_kill(players, username, role_assignments):
                   f"The players have voted to kill {new_player_voted}.\n"
                   f"{new_player_voted} has exited the game.\n")
             players.remove(new_player_voted)
+            input()
         else:
             print("You won! The mafia has been caught!\n")
             time.sleep(10)
@@ -206,11 +251,18 @@ def get_police_kills(victim, night):
         f"The mafia emptied {victim}'s fridge except for mustard and they starved to death.\n",
         f"{victim} was seduced off a lethal cliff by the mafia.\n"
     ]
-    # second kills
+    second_kills = [
+        f"The mafia microwaved {victim} and they have died.\n",
+        f"{victim} was zapped out of existence the mafia.\n",
+        f"The mafia sat on {victim} and they have died.\n",
+        f"The mafia flooded {victim}'s house with tomato juice and they drowned.\n",
+        f"{victim} was embarrassed to death by the mafia in a rap battle.\n"
+    ]
 
     if night == 1:
         kills = first_kills
-    # elif night == 2
+    elif night == 2:
+        kills = second_kills
 
     return kills
 

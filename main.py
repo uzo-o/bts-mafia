@@ -17,14 +17,13 @@ def intro(username, town, position_index):
     :param town: name of the town players will live in
     :param position_index: determines position user will play
     """
-    # greeting + brief instructions
     print("Welcome to BTS Mafia! Play at your own risk!\n")
     print("There will be one mafia, one police officer, and one"
           " doctor assigned to this game. Every other player is"
           " a civilian. \nIf you are not the mafia, your job is"
           " to find that player before they find you!\n")
 
-    input(f"\nYour username is {username}.\nPress enter to continue\n")
+    input(f"Your username is {username}.\nPress enter to continue\n")
 
     # users enter the game
     players = [username, "namjoon", "seokjin", "yoongi", "hoseok", "jimin", "taehyung", "jungkook"]
@@ -816,15 +815,21 @@ def main():
     Create gameplay settings and run game
     """
     username = input("Username:  ")
+    while len(username) < 1:
+        username = input("Username (must be at least one character):  ")
     input("Password:  ")
     town = input("What will your in-game town be called?:  ")
+    while len(town) < 1:
+        town = input("What will your in-game town be called? (must be at least one character:  ")
 
     version = input("Will you \n1) accept a randomized role\n2) choose your role\n")
     versions = ["1", "2"]
     while version not in versions: 
         version = input("(You must type 1 or 2.)\n")
+    # random position
     if version == "1": 
         position = random.randint(0, 2)
+    # user picks position
     elif version == "2": 
         position = int(input("0) police officer\n1) doctor\n2) civilian\n"))
         positions = [0, 1, 2]
