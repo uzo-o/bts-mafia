@@ -23,9 +23,18 @@ is swayed by your input.
 
 ## Dependencies
 You may need to install the packages:
-* art
-* colored
-* pygame
+* [art](https://pypi.org/project/art/)
+* [colored](https://pypi.org/project/colored/)
+* [pygame](https://pypi.org/project/pygame/)
+
+## Version History
+* 0.3
+    * Changed color scheme and restructured code into more modules  
+* 0.2
+    * Added art, colored, and pygame packages
+    * Created .exe
+* 0.1
+    * Initial Release
 
 ## Acknowledgements
 * Music by [Darnu-Pop](https://www.youtube.com/channel/UC3iCGU82DkLi2T4eYr-BiBg)
