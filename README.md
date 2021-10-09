@@ -1,5 +1,7 @@
 # BTS Mafia
-a text-based version of the mafia game with BTS members as users
+![BTS Mafia desktop icon](https://live.staticflickr.com/65535/51568630142_950b1a7a05_o.png)
+<br/>a text-based version of the mafia game with BTS members as users
+![BTS Mafia title screen](https://live.staticflickr.com/65535/51570334285_c5d96df31c_c.jpg)
 
 ## Description
 BTS Mafia runs an 8-player game of mafia featuring members from the K-Pop band
@@ -8,6 +10,8 @@ officer, doctor, civilian) or choose one yourself. You may not be the mafia.
 Each mode of gameplay features different dialogues spoken by different players,
 and lines are randomly assigned every time the program runs. There is also a 
 unique host of ways the mafia can choose to get rid of a player.
+
+<br/>![screenshot of BTS Mafia gameplay](https://live.staticflickr.com/65535/51568606967_c861195f9b_o.png)
 
 ### Police Officer Mode
 You can pick a suspicious player and confirm whether or not they're the mafia.
